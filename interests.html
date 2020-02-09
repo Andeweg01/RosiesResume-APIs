@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.1.1/css/hover-min.css" type="text/css" />
     <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0YzWEfy4fwIjTEOgBrWHhFPeVMlUCM04&callback=initMap"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbyehlGjbQQXrOGtkdVZLtJPsFqVJmJkE&callback=initMap"></script>
 </head>
 
 <body>
@@ -160,7 +160,7 @@
             </div>
         </div>
     </footer>
-    <script>
+<script>
     function initMap() {
         var map = new google.maps.Map(document.getElementById("map"), {
             zoom: 3,
@@ -169,8 +169,23 @@
                 lng: -33.134766
             }
         });
+        var labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        var locations = [
+            { lat: 40.785091, lng: -73.968285 },
+            { lat: 41.084045, lng: -73.874245 },
+            { lat: 40.754932, lng: -73.984016 }
+        ];
+
+        var markers = locations.map(function(location, i){
+            return new google.maps.Marker({
+                position: location,
+                label: label[i % labels.length]
+            });
+        });
+        
     }
-        </script>
+</script>
 
 <script src="/maps/documentation/javascript/examples/markerclusterer/markerclustererplus@4.0.1.min.js"></script>
     </body>
