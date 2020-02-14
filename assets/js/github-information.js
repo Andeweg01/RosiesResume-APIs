@@ -52,7 +52,7 @@ function fetchGitHubInformation(event){
         </div>`);
 
         $.when( // when, then: promise... when this is done it promises something
-            $.getJSON(`https://api.github.com/users/${username}`) 
+            $.getJSON(`https://api.github.com/users/${username}`), 
             // when we've got a response from the GitHub API
             // JSON function with url
             $.getJSON(`https://api.github.com/users/${username}/repos`) 
