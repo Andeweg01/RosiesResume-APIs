@@ -16,11 +16,33 @@ function userInformationHTML(user){
         </div>`;
 }
 
+function repoInformationHTML(repos){
+    if (repos.length == 0) {
+        return `<div class="clearfix repo-list">No repos!</div>`;
+    }
+
+    var listItemsHTML = repos.map(function(repo){
+        return `<li>
+            <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+            </li>`;
+    });
+
+    return `<div class="clearfix repo-list">
+    <p>
+    <strong>Repo List:</strong>
+    </p>
+    <ul>
+        ${listItemsHTML.join("/n")}
+        </ul>
+        </div>`;
+}
+
 function fetchGitHubInformation(event){
 
     var username = $("#gh-username").val();  // jQuery to select the value in id gh-username
     if (!username) { // if not username
-        $("#gh-user-data").html(`<h2>Please enter a GitHub username</h2>`); // we write html into id gh-user-data div
+        $("#gh-user-data").html(`<h2>Please enter a GitHub username</h2>`); 
+        // we write html into id gh-user-data div
     return; // the return prevents looking into the GitHub API; we leave the if
     }
 
@@ -30,14 +52,20 @@ function fetchGitHubInformation(event){
         </div>`);
 
         $.when( // when, then: promise... when this is done it promises something
-            $.getJSON(`https://api.github.com/users/${username}`) // when we've got a response from the GitHub API
+            $.getJSON(`https://api.github.com/users/${username}`) 
+            // when we've got a response from the GitHub API
             // JSON function with url
+            $.getJSON(`https://api.github.com/users/${username}/repos`) 
+            // listing the repos for this user
         ).then( // then run a function to display it in the gh-user-data div
-            function(response){ // the response from the JSON method will be stored
-                var userData = response; // into the variable userData
+            function(firstResponse, secondResponse){ // the responses from the JSON methods will be stored
+                var userData = firstResponse[0]; // into the variable userData. 
+                // Having two calls the when() method packs it into arrays and they're the first element (index)
+                var repoData = secondResponse[0]; // into the variable repoData.
                 $("#gh-user-data").html(userInformationHTML(userData));
                 // jQuery selector to select the gh-user-data div and set HTML to the result of another function userInformationHTML
                 // and userData is the argument
+                $("#gh-repo-data").html(repoInformationHTML(repoData));
             }, function(errorResponse){ // if there is a not found error the html 'no info found..' will be shown in gh-user-data div
                 if (errorResponse.status == 404){ // not found error
                     $("#gh-user-data").html(`<h2>No info found for user ${username}</h2>`);
