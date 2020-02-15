@@ -32,12 +32,14 @@ function repoInformationHTML(repos){
     <strong>Repo List:</strong>
     </p>
     <ul>
-        ${listItemsHTML.join("/n")}
+        ${listItemsHTML.join("\n")}
         </ul>
         </div>`;
 }
 
 function fetchGitHubInformation(event){
+    $("#gh-user-data").html("");
+    $("#gh-repo-data").html("");
 
     var username = $("#gh-username").val();  // jQuery to select the value in id gh-username
     if (!username) { // if not username
@@ -76,3 +78,5 @@ function fetchGitHubInformation(event){
                 }
             });
 }
+
+$(document).ready(fetchGitHubInformation);
